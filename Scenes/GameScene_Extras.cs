@@ -17,7 +17,7 @@ namespace OpenGL_Game.Scenes
 
         public int Score => pickupsCollected;
 
-        private void HandleDoorPortal()
+        private void HandleDoorPortal(float dT)
         {
             if (pickupsCollected >= 3)
             {
@@ -35,8 +35,8 @@ namespace OpenGL_Game.Scenes
                 {
                     if (position.Y < doorMinMaxVals[2] && rotation.Z < doorMinMaxVals[3])
                     {
-                        rotation.Z += 0.00085f;
-                        position.Y += 0.006f;
+                        rotation.Z += 0.085f * dT;
+                        position.Y += 0.6f * dT;
                         if (compAudio.State == ALSourceState.Stopped || compAudio.State == ALSourceState.Paused)
                             compAudio.Play();
                     }
@@ -51,8 +51,8 @@ namespace OpenGL_Game.Scenes
                     //door open
                     if (position.Y > doorMinMaxVals[0] && rotation.Z > doorMinMaxVals[1])
                     {
-                        rotation.Z -= 0.00085f;
-                        position.Y -= 0.006f;
+                        rotation.Z -= 0.085f * dT;
+                        position.Y -= 0.6f * dT;
                         if (compAudio.State == ALSourceState.Stopped || compAudio.State == ALSourceState.Paused)
                             compAudio.Play();
                     }
@@ -70,7 +70,7 @@ namespace OpenGL_Game.Scenes
         //private Entity[] pickupEntities = new Entity[3];
         private Vector3[] startPositions = new Vector3[3];
         bool firstRun = true;
-        private void AnimatePickups()
+        private void AnimatePickups(float dT)
         {
             List<Entity> pickupEntities = entityManager.Entities().Where(ent => ent.Name.ToLower().Contains("pickup")).ToList();
             for(int i = 0; i < pickupEntities.Count; i++)
@@ -81,9 +81,9 @@ namespace OpenGL_Game.Scenes
                 if (firstRun) startPositions[i] = position;
                 if (firstRun && i == pickupEntities.Count-1) firstRun = false;
 
-                rotation.Y += MathHelper.DegreesToRadians(1);
+                rotation.Y += MathHelper.DegreesToRadians(30) * dT;
 
-                position.Y = startPositions[i].Y + 0.25f *  (float)Math.Sin(sceneManager.time);
+                position.Y = startPositions[i].Y + 0.25f *  (float)Math.Sin(2 * sceneManager.time);
 
                 transform.Position = position;
                 transform.Rotation = rotation;

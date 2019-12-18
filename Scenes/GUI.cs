@@ -27,6 +27,7 @@ namespace OpenGL_Game.Scenes
         //Called by SceneManager onLoad, and when screen size is changed
         public static void SetUpGUI(int width, int height)
         {
+
             m_width = width;
             m_height = height;
 
@@ -35,7 +36,6 @@ namespace OpenGL_Game.Scenes
             //Setup the graphics
             textGFX = Graphics.FromImage(textBMP);
             textGFX.Clear(clearColour);
-
             //Load the texture into the Graphics Card
             if (textTexture > 0)
             {

@@ -8,13 +8,13 @@ namespace OpenGL_Game.Components
 {
     /// <summary>
     /// Describes a collider as a line with a start and end position. Is infinitely tall.
+    /// Multiple line collision components can be stacked to describe seperate line strips.
     /// </summary>
     class ComponentCollisionLine : IComponent
     {
         public ComponentTypes ComponentType => ComponentTypes.COMPONENT_COLLISION_LINE;
 
-        Vector2 startPosition;
-        Vector2 endPosition;
+        Vector2[] points;
         /// <summary>
         /// 
         /// </summary>
@@ -22,19 +22,18 @@ namespace OpenGL_Game.Components
         /// <param name="endPos">X and Z position to end the line</param>
         public ComponentCollisionLine(Vector2 startPos, Vector2 endPos)
         {
-            this.startPosition = startPos;
-            this.endPosition = endPos;
+            points = new Vector2[2];
+            points[0] = startPos;
+            points[1] = endPos;
         }
-
-        public Vector2 StartPosition
+        public ComponentCollisionLine(Vector2[] points)
         {
-            get { return startPosition; }
-            set { startPosition = value; }
+            this.points = points;
         }
-        public Vector2 EndPosition
+        public Vector2[] Points
         {
-            get { return endPosition; }
-            set { endPosition = value; }
+            get { return points; }
+            set { points = value; }
         }
 
         public void Dispose()

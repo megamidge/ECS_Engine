@@ -29,6 +29,7 @@ namespace OpenGL_Game.Scenes
         {
             sceneManager.CursorVisible = false;
             sceneManager.CursorGrabbed = true;
+
             gameInstance = this;
             entityManager = new EntityManager();
             systemManager = new SystemManager();
@@ -62,10 +63,7 @@ namespace OpenGL_Game.Scenes
             CreateEntities();
             CreateSystems();
 
-            // TODO: Add your initialization logic here
-
-            //mousePosInit
-            //mouseLastX = Mouse.GetState().X;
+            // TODO: Add your initialization logic here;
         }
 
         
@@ -120,23 +118,86 @@ namespace OpenGL_Game.Scenes
             //entityManager.AddEntity(newEntity);
 
 
-            Vector2 colliderStartPos = new Vector2(14.5f, 24.5f);
-            Vector2 colliderEndPos = new Vector2(-14.5f, 24.5f);
-
+            Vector2[] outsidePoints = new Vector2[]
+            {
+                new Vector2(14.5f, 24.5f),
+                new Vector2(-14.5f, 24.5f),
+                new Vector2(-14.5f,29.5f),
+                new Vector2(-29.5f,29.5f),
+                new Vector2(-29.5f, 14.5f),
+                new Vector2(-24.5f, 14.5f),
+                new Vector2(-24.5f, -14.5f),
+                new Vector2(-29.5f, -14.5f),
+                new Vector2(-29.5f, -29.5f),
+                new Vector2(-14.5f, -29.5f),
+                new Vector2(-14.5f, -24.5f),
+                new Vector2(14.5f, -24.5f),
+                new Vector2(14.5f, -29.5f),
+                new Vector2(29.5f, -29.5f),
+                new Vector2(29.5f, -14.5f),
+                new Vector2(24.5f, -14.5f),
+                new Vector2(24.5f, 14.5f),
+                new Vector2(29.5f, 14.5f),
+                new Vector2(29.5f, 29.5f),
+                new Vector2(14.5f, 29.5f),
+                new Vector2(14.5f, 24.5f),
+            }; 
+            Vector2[] insidePoints1 = new Vector2[]
+            {
+                new Vector2(14.5f,19.5f),
+                new Vector2(2.5f,19.5f),
+                new Vector2(2.5f,7.5f),
+                new Vector2(7.5f,7.5f),
+                new Vector2(7.5f,2.5f),
+                new Vector2(19.5f,2.5f),
+                new Vector2(19.5f,14.5f),
+                new Vector2(14.5f,14.5f),
+                new Vector2(14.5f,19.5f),
+            };
+            Vector2[] insidePoints2 = new Vector2[]
+            {
+                new Vector2(-14.5f,19.5f),
+                new Vector2(-2.5f,19.5f),
+                new Vector2(-2.5f,7.5f),
+                new Vector2(-7.5f,7.5f),
+                new Vector2(-7.5f,2.5f),
+                new Vector2(-19.5f,2.5f),
+                new Vector2(-19.5f,14.5f),
+                new Vector2(-14.5f,14.5f),
+                new Vector2(-14.5f,19.5f),
+            };
+            Vector2[] insidePoints3 = new Vector2[]
+            {
+                new Vector2(-14.5f,-19.5f),
+                new Vector2(-2.5f,-19.5f),
+                new Vector2(-2.5f,-7.5f),
+                new Vector2(-7.5f,-7.5f),
+                new Vector2(-7.5f,-2.5f),
+                new Vector2(-19.5f,-2.5f),
+                new Vector2(-19.5f,-14.5f),
+                new Vector2(-14.5f,-14.5f),
+                new Vector2(-14.5f,-19.5f),
+            };
+            Vector2[] insidePoints4 = new Vector2[]
+            {
+                new Vector2(14.5f,-19.5f),
+                new Vector2(2.5f,-19.5f),
+                new Vector2(2.5f,-7.5f),
+                new Vector2(7.5f,-7.5f),
+                new Vector2(7.5f,-2.5f),
+                new Vector2(19.5f,-2.5f),
+                new Vector2(19.5f,-14.5f),
+                new Vector2(14.5f,-14.5f),
+                new Vector2(14.5f,-19.5f),
+            };
             newEntity = new Entity("Maze");
             newEntity.AddComponent(new ComponentTransform(0, 0, 0));
             newEntity.AddComponent(new ComponentGeometry("Geometry/Maze2/maze.obj"));
-            newEntity.AddComponent(new ComponentCollisionLine(new Vector2(colliderStartPos.X, colliderStartPos.Y), new Vector2(colliderEndPos.X, colliderEndPos.Y)));//Across the middle of the maze.
-            entityManager.AddEntity(newEntity);
-
-            newEntity = new Entity("StartPosition");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(colliderStartPos.X, 1f, colliderStartPos.Y), new Vector3(0), new Vector3(0.05f)));
-            newEntity.AddComponent(new ComponentGeometry("Geometry/Moon/moon.obj"));
-            entityManager.AddEntity(newEntity);
-
-            newEntity = new Entity("EndPosition");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(colliderEndPos.X, 1f, colliderEndPos.Y), new Vector3(0), new Vector3(0.05f)));
-            newEntity.AddComponent(new ComponentGeometry("Geometry/Moon/moon.obj"));
+            newEntity.AddComponent(new ComponentCollisionLine(outsidePoints));
+            newEntity.AddComponent(new ComponentCollisionLine(insidePoints1));
+            newEntity.AddComponent(new ComponentCollisionLine(insidePoints2));
+            newEntity.AddComponent(new ComponentCollisionLine(insidePoints3));
+            newEntity.AddComponent(new ComponentCollisionLine(insidePoints4));
             entityManager.AddEntity(newEntity);
 
         }
@@ -151,7 +212,7 @@ namespace OpenGL_Game.Scenes
             systemManager.AddSystem(newSystem);
             newSystem = new SystemAudio();
             systemManager.AddSystem(newSystem);
-            newSystem = new SystemCollisionCameraSphere(collisionManager, camera);
+            newSystem = new SystemCollisionCamera(collisionManager, camera);
             systemManager.AddSystem(newSystem);
         }
 
@@ -166,9 +227,7 @@ namespace OpenGL_Game.Scenes
         public override void Update(FrameEventArgs e)
         {
             dt = (float)e.Time;
-            collisionManager.ProcessCollisions();
 
-            systemManager.ActionSystems(entityManager);
             //System.Console.WriteLine("fps=" + (int)(1.0/dt));
 
             //keyboard stuff:
@@ -177,17 +236,16 @@ namespace OpenGL_Game.Scenes
             if (GamePad.GetState(1).Buttons.Back == ButtonState.Pressed)
                 sceneManager.Exit();
 
-            HandleCameraMovement();
+            HandleCameraMovement(dt);
+                                            
+            AnimatePickups(dt);
 
+            HandleDoorPortal(dt);            
 
+            systemManager.ActionSystems(entityManager);
+            collisionManager.ProcessCollisions();
 
-            AL.Listener(ALListener3f.Position, ref camera.cameraPosition);
-            AL.Listener(ALListenerfv.Orientation, ref camera.cameraDirection, ref camera.cameraUp);
-
-            AnimatePickups();
-
-            HandleDoorPortal();            
-
+            camera.UpdateView();
         }
         /// <summary>
         /// This is called when the game should draw itself.
@@ -228,15 +286,6 @@ namespace OpenGL_Game.Scenes
         {
             keysPressed[(char)e.Key] = true;
 
-            if (e.Key == Key.F)
-            {
-                pickupsCollected++;
-            }
-            if(e.Key == Key.P)
-            {
-                Console.WriteLine($"Pos: {camera.cameraPosition.X} {camera.cameraPosition.Z}");
-            }
-
             if(e.Key == Key.Q && !keyDown)
             {
                 keyDown = true;
@@ -254,21 +303,24 @@ namespace OpenGL_Game.Scenes
         }
 
         int mouseLastX = Mouse.GetState().X;
-        private void HandleCameraMovement()
+        private void HandleCameraMovement(float dT)
         {
             float deltaX = Mouse.GetState().X - mouseLastX;
-            float camRotation = deltaX * 0.001f;
-            camera.RotateY(camRotation);
+            float camRotation = deltaX * 0.08f;
+            camera.RotateY(camRotation * dT);
             mouseLastX = Mouse.GetState().X;
 
             if (keysPressed[(char)Key.Up] || keysPressed[(char)Key.W])
-                camera.MoveForward(0.1f);
+                camera.MoveForward(6f * dT);
             if (keysPressed[(char)Key.Down] || keysPressed[(char)Key.S])
-                camera.MoveForward(-0.1f);
+                camera.MoveForward(-6f * dT);
             if (keysPressed[(char)Key.Left] || keysPressed[(char)Key.A])
-                camera.RotateY(-0.01f);
+                camera.RotateY(-3f * dT);
             if (keysPressed[(char)Key.Right] || keysPressed[(char)Key.D])
-                camera.RotateY(0.01f);
+                camera.RotateY(3f * dT);
+
+            AL.Listener(ALListener3f.Position, ref camera.cameraPosition);
+            AL.Listener(ALListenerfv.Orientation, ref camera.cameraDirection, ref camera.cameraUp);
         }
     }
 }

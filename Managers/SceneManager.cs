@@ -81,6 +81,7 @@ namespace OpenGL_Game.Managers
             updater(e);
         }
 
+        public double time = 0;
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             time += e.Time;
@@ -92,7 +93,6 @@ namespace OpenGL_Game.Managers
             GL.Flush();
             SwapBuffers();
         }
-        public double time = 0;
         int LoadShaders(string vertex, string fragment)
         {
             int address = GL.CreateProgram();

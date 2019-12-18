@@ -27,9 +27,10 @@ namespace OpenGL_Game.Managers
                 if(collision.collisionType == COLLISIONTYPE.SPHERE_LINE)
                 {
                     Camera camera = Scenes.GameScene.gameInstance.camera;
-                    Console.WriteLine($"{(camera.previousPosition).X} {(camera.previousPosition).Z}");
-                    Console.WriteLine($"{(camera.cameraPosition).X} {(camera.cameraPosition).Z}");
                     camera.SetPosition(camera.previousPosition);
+                    //Console.WriteLine($"{(camera.previousPosition).X} {(camera.previousPosition).Z}");
+                    //Console.WriteLine($"{(camera.cameraPosition).X} {(camera.cameraPosition).Z}");
+                    
                 }
             }
             ClearManifold();
