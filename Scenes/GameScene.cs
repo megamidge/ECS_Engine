@@ -110,6 +110,12 @@ namespace OpenGL_Game.Scenes
             newEntity.AddComponent(new ComponentCollisionSphere(1));
             entityManager.AddEntity(newEntity);
 
+            newEntity = new Entity("Drone");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(0), new Vector3(0), new Vector3(0.75f)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/Drone/drone.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(1));
+            entityManager.AddEntity(newEntity);
+
             //newEntity = new Entity("Intergalactic_Spaceship");
             //newEntity.AddComponent(new ComponentPosition(0, 0, 0));
             //newEntity.AddComponent(new ComponentGeometry("Geometry/Intergalactic_Spaceship/Intergalactic_Spaceship.obj"));
