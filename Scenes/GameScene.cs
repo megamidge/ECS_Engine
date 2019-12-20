@@ -98,7 +98,7 @@ namespace OpenGL_Game.Scenes
                     new Cell("C10", new Vector2(14.5f, 24.5f), new Vector2(-14.5f,19.5f), new string[]{"I","H","G" }),
                     new Cell("C11", new Vector2(2.5f, 19.5f), new Vector2(-2.5f,7.5f), new string[]{"H","O" }),
                     new Cell("C12", new Vector2(-7.5f, 2.5f), new Vector2(-19.5f,-2.5f), new string[]{"P","K" }),
-                    new Cell("C13", new Vector2(-19.5f, 14.5f), new Vector2(-24.5f,-14.5f), new string[]{"L","K","I" }),
+                    new Cell("C13", new Vector2(-19.5f, 14.5f), new Vector2(-24.5f,-14.5f), new string[]{"L","K","J" }),
                 }
             );
 
@@ -314,6 +314,9 @@ namespace OpenGL_Game.Scenes
             float width = sceneManager.Width, height = sceneManager.Height, fontSize = Math.Min(width, height) / 10f;
             GUI.clearColour = Color.Transparent;
             GUI.Label(new Rectangle(0, 0, (int)width, (int)(fontSize * 2f)), $"Keys Collected: {pickupsCollected}/3  {doorState}", 18, StringAlignment.Near, Color.White);
+            List<Cell> cellNames = navMesh.FindCellsForPosition(camera.cameraPosition.Xz);
+            
+            GUI.Label(new Rectangle(0, 40, (int)width, (int)(fontSize * 2f)), $"Current cell: {string.Join(", ",cellNames.ConvertAll(c => c.name))}", 18, StringAlignment.Near, Color.White);
             GUI.Render();
         }
 

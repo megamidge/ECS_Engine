@@ -57,10 +57,11 @@ namespace OpenGL_Game.Objects
         }
         public List<Cell> FindCellsForPosition(Vector2 position)
         {
+            float margin = 0.3f; //Margin of error for edge of cell (position is likely to not be exactly on the edge, meaning the ai would get stuck very close to a node)
             List<Cell> foundCells = new List<Cell>();
             foreach(Cell cell in cells)
             {
-                if(position.X <= cell.boundsPositive.X && position.X >= cell.boundsNegative.X && position.Y  <= cell.boundsPositive.Y && position.Y >= cell.boundsNegative.Y)
+                if(position.X - margin <= cell.boundsPositive.X && position.X + margin >= cell.boundsNegative.X && position.Y - margin <= cell.boundsPositive.Y && position.Y + margin >= cell.boundsNegative.Y)
                 {
                     foundCells.Add(cell);
                 }
