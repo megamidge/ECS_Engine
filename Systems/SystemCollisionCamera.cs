@@ -56,7 +56,7 @@ namespace OpenGL_Game.Systems
                 }).ToArray();
 
                 foreach(ComponentCollisionLine collider in collisionComponents) //Loop through all line collider components.
-                    LineCollision(entity, (ComponentTransform)transformComponent, collider);
+                    LineCollision(entity, collider);
             }
         }
 
@@ -69,7 +69,7 @@ namespace OpenGL_Game.Systems
             }
         }
 
-        private void LineCollision(Entity entity, ComponentTransform transformComponent, ComponentCollisionLine collisionComponent)
+        private void LineCollision(Entity entity, ComponentCollisionLine collisionComponent)
         {
             for(int i = 0; i < collisionComponent.Points.Length-1; i++)
             {

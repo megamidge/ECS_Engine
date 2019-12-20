@@ -1,13 +1,14 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using OpenGL_Game.Components;
-using OpenGL_Game.Systems;
+﻿using OpenGL_Game.Components;
 using OpenGL_Game.Managers;
 using OpenGL_Game.Objects;
-using System.Drawing;
-using System;
+using OpenGL_Game.Systems;
+using OpenTK;
 using OpenTK.Audio.OpenAL;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace OpenGL_Game.Scenes
 {
@@ -24,6 +25,8 @@ namespace OpenGL_Game.Scenes
         public GameSpecific_CollisionManager collisionManager;
 
         public static GameScene gameInstance;
+
+        private NavMesh navMesh;
 
         public GameScene(SceneManager sceneManager) : base(sceneManager)
         {
@@ -55,10 +58,50 @@ namespace OpenGL_Game.Scenes
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
             // Set Camera
-            camera = new Camera(new Vector3(22, 1.8f, 22), new Vector3(0, 1.8f,0), (float)(sceneManager.Width) / (float)(sceneManager.Height), 0.1f, 100f);
+            camera = new Camera(new Vector3(22, 1.8f, 22), new Vector3(0, 1.8f, 0), (float)(sceneManager.Width) / (float)(sceneManager.Height), 0.1f, 100f);
+            //camera = new Camera(new Vector3(22, 18.8f, 22), new Vector3(0, 1.8f, 0), (float)(sceneManager.Width) / (float)(sceneManager.Height), 0.1f, 100f);
 
             //Set collision manager
             collisionManager = new GameSpecific_CollisionManager();
+
+            //Set up navmesh.
+            navMesh = new NavMesh(
+                new List<NavNode>(){
+                    new NavNode("A", new Vector2(-14.5f,-22), new string[]{"B","C","L" }),
+                    new NavNode("B", new Vector2(0, -19.5f), new string[]{"M","A","C" }),
+                    new NavNode("C", new Vector2(14.5f,-22), new string[]{"B","A","D" }),
+                    new NavNode("D", new Vector2(22, -14.5f), new string[]{"C","E","F" }),
+                    new NavNode("E", new Vector2(19.5f, 0), new string[]{"D","F","N" }),
+                    new NavNode("F", new Vector2(22, 14.5f), new string[]{"D","E","G" }),
+                    new NavNode("G", new Vector2(14.5f, 22), new string[]{"F","H","I" }),
+                    new NavNode("H", new Vector2(0, 19.5f), new string[]{"G","I","O" }),
+                    new NavNode("I", new Vector2(-14.5f, 22), new string[]{"G","J","H" }),
+                    new NavNode("J", new Vector2(-22, 14.5f), new string[]{"K","I","L" }),
+                    new NavNode("K", new Vector2(-19.5f, 0), new string[]{"J","L","P" }),
+                    new NavNode("L", new Vector2(-22, -14.5f), new string[]{"J","K","A" }),
+                    new NavNode("M", new Vector2(0, -7.5f), new string[]{"B","P","N","O" }),
+                    new NavNode("N", new Vector2(7.5f, 0), new string[]{"E","M","P","O" }),
+                    new NavNode("O", new Vector2(0, 7.5f), new string[]{"H","M","N","P" }),
+                    new NavNode("P", new Vector2(-7.5f, 0), new string[]{"K","M","N","O" }),
+                },
+                new List<Cell>()
+                {
+                    new Cell("C1", new Vector2(-14.5f, -14.5f), new Vector2(-29.5f,-29.5f), new string[]{"A","L" }),
+                    new Cell("C2", new Vector2(14.5f, -19.5f), new Vector2(-14.5f,-24.5f), new string[]{"A","B","C" }),
+                    new Cell("C3", new Vector2(29.5f, -14.5f), new Vector2(14.5f,-29.5f), new string[]{"D","C" }),
+                    new Cell("C4", new Vector2(24.5f, 14.5f), new Vector2(19.5f,-14.5f), new string[]{"D","E","F" }),
+                    new Cell("C5", new Vector2(19.5f, 2.5f), new Vector2(7.5f,-2.5f), new string[]{"E","N" }),
+                    new Cell("C6", new Vector2(2.5f, -7.5f), new Vector2(-2.5f,-19.5f), new string[]{"B","M" }),
+                    new Cell("C7", new Vector2(7.5f, 7.5f), new Vector2(-7.5f,-7.5f), new string[]{"M","N","O","P" }),
+                    new Cell("C8", new Vector2(-14.5f, 29.5f), new Vector2(-29.5f,14.5f), new string[]{"I","J" }),
+                    new Cell("C9", new Vector2(29.5f, 29.5f), new Vector2(14.5f,14.5f), new string[]{"F","G" }),
+                    new Cell("C10", new Vector2(14.5f, 24.5f), new Vector2(-14.5f,19.5f), new string[]{"I","H","G" }),
+                    new Cell("C11", new Vector2(2.5f, 19.5f), new Vector2(-2.5f,7.5f), new string[]{"H","O" }),
+                    new Cell("C12", new Vector2(-7.5f, 2.5f), new Vector2(-19.5f,-2.5f), new string[]{"P","K" }),
+                    new Cell("C13", new Vector2(-19.5f, 14.5f), new Vector2(-24.5f,-14.5f), new string[]{"L","K","I" }),
+                }
+            );
+
 
             CreateEntities();
             CreateSystems();
@@ -66,20 +109,20 @@ namespace OpenGL_Game.Scenes
             // TODO: Add your initialization logic here;
         }
 
-        
+
 
         private void CreateEntities()
         {
             Entity newEntity;
 
             newEntity = new Entity("Moon");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(0,0,7), new Vector3(0,MathHelper.DegreesToRadians(0),0), new Vector3(1,1,1)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-14.5f, 1.8f, -24.5f), new Vector3(0, MathHelper.DegreesToRadians(0), 0), new Vector3(1, 1, 1)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/Moon/moon.obj"));
             newEntity.AddComponent(new ComponentCollisionSphere(2f));
             entityManager.AddEntity(newEntity);
 
             newEntity = new Entity("Landing_Ship");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(24,0,24), new Vector3(0,MathHelper.DegreesToRadians(-225),0), new Vector3(1)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(24, 0, 24), new Vector3(0, MathHelper.DegreesToRadians(-225), 0), new Vector3(1)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/LandingShip/spaceship.obj"));
             entityManager.AddEntity(newEntity);
 
@@ -111,9 +154,10 @@ namespace OpenGL_Game.Scenes
             entityManager.AddEntity(newEntity);
 
             newEntity = new Entity("Drone");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(0), new Vector3(0), new Vector3(0.75f)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(0), new Vector3(0,0,0), new Vector3(0.75f)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/Drone/drone.obj"));
             newEntity.AddComponent(new ComponentCollisionSphere(1));
+            newEntity.AddComponent(new ComponentAI());
             entityManager.AddEntity(newEntity);
 
             //newEntity = new Entity("Intergalactic_Spaceship");
@@ -147,7 +191,7 @@ namespace OpenGL_Game.Scenes
                 new Vector2(29.5f, 29.5f),
                 new Vector2(14.5f, 29.5f),
                 new Vector2(14.5f, 24.5f),
-            }; 
+            };
             Vector2[] insidePoints1 = new Vector2[]
             {
                 new Vector2(14.5f,19.5f),
@@ -220,11 +264,13 @@ namespace OpenGL_Game.Scenes
             systemManager.AddSystem(newSystem);
             newSystem = new SystemCollisionCamera(collisionManager, camera);
             systemManager.AddSystem(newSystem);
+            newSystem = new SystemAI(navMesh,camera);
+            systemManager.AddSystem(newSystem);
         }
 
         //Persistent variables (cross-update variables):
         bool[] keysPressed = new bool[255];
-        
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -237,16 +283,16 @@ namespace OpenGL_Game.Scenes
             //System.Console.WriteLine("fps=" + (int)(1.0/dt));
 
             //keyboard stuff:
-            if(keysPressed[(char)Key.M])
+            if (keysPressed[(char)Key.M])
                 sceneManager.ChangeScene(SceneType.SCENE_GAME_OVER);
             if (GamePad.GetState(1).Buttons.Back == ButtonState.Pressed)
                 sceneManager.Exit();
 
             HandleCameraMovement(dt);
-                                            
+
             AnimatePickups(dt);
 
-            HandleDoorPortal(dt);            
+            HandleDoorPortal(dt);
 
             systemManager.ActionSystems(entityManager);
             collisionManager.ProcessCollisions();
@@ -278,7 +324,7 @@ namespace OpenGL_Game.Scenes
         {
             sceneManager.keyboardDownDelegate -= Keyboard_KeyDown;
             sceneManager.keyboardUpDelegate -= Keyboard_KeyUp;
-            
+
             ResourceManager.RemoveAllAssets();
             entityManager.DisposeEntities();
 
@@ -292,7 +338,7 @@ namespace OpenGL_Game.Scenes
         {
             keysPressed[(char)e.Key] = true;
 
-            if(e.Key == Key.Q && !keyDown)
+            if (e.Key == Key.Q && !keyDown)
             {
                 keyDown = true;
                 camera.MoveForward(0.1f);
@@ -302,7 +348,7 @@ namespace OpenGL_Game.Scenes
         {
             keysPressed[(char)e.Key] = false;
 
-            if(e.Key == Key.Q && keyDown)
+            if (e.Key == Key.Q && keyDown)
             {
                 keyDown = false;
             }

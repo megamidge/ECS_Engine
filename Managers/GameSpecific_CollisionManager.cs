@@ -12,7 +12,6 @@ namespace OpenGL_Game.Managers
         {
             foreach (Collision collision in collisionManifold)
             {
-                Console.WriteLine($"Collision:{collision.entity.Name}, {collision.collisionType}");
                 if (collision.entity.Name.ToLower().Contains("pickup"))
                 {
                     Scenes.GameScene.gameInstance.HandlePickup(collision.entity);
@@ -28,8 +27,6 @@ namespace OpenGL_Game.Managers
                 {
                     Camera camera = Scenes.GameScene.gameInstance.camera;
                     camera.SetPosition(camera.previousPosition);
-                    //Console.WriteLine($"{(camera.previousPosition).X} {(camera.previousPosition).Z}");
-                    //Console.WriteLine($"{(camera.cameraPosition).X} {(camera.cameraPosition).Z}");
                     
                 }
             }

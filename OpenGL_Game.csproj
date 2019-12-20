@@ -57,12 +57,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Components\ComponentAI.cs" />
     <Compile Include="Components\ComponentAudio.cs" />
     <Compile Include="Components\ComponentCollisionLine.cs" />
     <Compile Include="Components\ComponentCollisionSphere.cs" />
     <Compile Include="Components\ComponentVelocity.cs" />
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\GameSpecific_CollisionManager.cs" />
+    <Compile Include="Objects\NavMesh.cs" />
     <Compile Include="OBJLoader\CjClutter.ObjLoader.Loader\Common\StringExtensions.cs" />
     <Compile Include="OBJLoader\CjClutter.ObjLoader.Loader\Data\DataStore\DataStore.cs" />
     <Compile Include="OBJLoader\CjClutter.ObjLoader.Loader\Data\DataStore\IDataStore.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Scenes\Scene.cs" />
     <Compile Include="Systems\ISystem.cs" />
     <Compile Include="Managers\SystemManager.cs" />
+    <Compile Include="Systems\SystemAI.cs" />
     <Compile Include="Systems\SystemAudio.cs" />
     <Compile Include="Systems\SystemCollisionCamera.cs" />
     <Compile Include="Systems\SystemCollisionSphere.cs" />
