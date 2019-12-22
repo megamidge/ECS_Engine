@@ -152,12 +152,6 @@
     <None Include="Geometry\Drone\drone.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Geometry\Intergalactic_Spaceship\Intergalactic_Spaceship.mtl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Geometry\Intergalactic_Spaceship\Intergalactic_Spaceship.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Geometry\LandingShip\spaceship.mtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -176,12 +170,6 @@
     <None Include="Geometry\Maze2\maze.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Geometry\Maze\maze.mtl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Geometry\Maze\maze.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Geometry\Moon\moon.mtl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -193,12 +181,6 @@
     </None>
     <None Include="Geometry\Pickup\pickup.obj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Geometry\Wraith_Raider_Starship\Wraith_Raider_Starship.mtl">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Geometry\Wraith_Raider_Starship\Wraith_Raider_Starship.obj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
@@ -246,9 +228,6 @@
     <Content Include="Textures\LandingShip\metal_plate.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Maze\brick.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Textures\Pickup\battery_texture.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -261,33 +240,6 @@
     <Content Include="Textures\Spaceship\Intergalactic_Spaceship_rough.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Textures\Wraith_Raider_Starship\bmq1.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\cockpit_mtl1_diffcol.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\d10.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\d17.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\d17b.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\door_mtl1_diffcol.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\door_mtl2_diffcol.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\vj2c.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Textures\Wraith_Raider_Starship\yx1_02_01_01.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Textures\Moon\moon_diffuse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
