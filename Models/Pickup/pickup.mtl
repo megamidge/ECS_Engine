@@ -1,0 +1,13 @@
+# Blender MTL File: 'pickup.blend'
+# Material Count: 1
+
+newmtl Material.001
+Ns 362.086501
+Ka 0.982857 0.982857 0.982857
+Kd 0.000000 0.000000 0.000000
+Ks 0.511429 0.511429 0.511429
+Ke 0.000000 0.000000 0.000000
+Ni 0.000000
+d 1.000000
+illum 3
+map_Kd .

@@ -79,13 +79,14 @@ namespace OpenGL_Game.Systems
                 Vector2 lineDirection = lineStart - lineEnd;
                 Vector2 lineNormal = new Vector2(-lineDirection.Y, lineDirection.X).Normalized();
 
+
                 Vector2 v1 = camera.cameraPosition.Xz - lineStart;
                 Vector2 v2 = camera.previousPosition.Xz - lineStart;
 
                 float v1DotNormal = Vector2.Dot(v1, lineNormal);
                 float v2DotNormal = Vector2.Dot(v2, lineNormal);
                 //Console.WriteLine(V1DotNormal * V2DotNormal);
-                if(v1DotNormal * v2DotNormal < 0) //True = Movement crosses infinite line.
+                if (v1DotNormal * v2DotNormal < 0) //True = Movement crosses infinite line.
                 {
                     Vector2 v3 = camera.previousPosition.Xz - lineStart;
                     Vector2 v4 = camera.previousPosition.Xz - lineEnd;
@@ -93,15 +94,15 @@ namespace OpenGL_Game.Systems
                     Vector2 moveDirection = camera.previousPosition.Xz - camera.cameraPosition.Xz;
                     Vector2 moveNormal = new Vector2(-moveDirection.Y, moveDirection.X).Normalized();
 
-                    float v3DotNormal = Vector2.Dot(v3,moveNormal);
+                    float v3DotNormal = Vector2.Dot(v3, moveNormal);
                     float v4DotNormal = Vector2.Dot(v4, moveNormal);
 
-                    if(v3DotNormal * v4DotNormal < 0) //True = Collision has happened
+                    if (v3DotNormal * v4DotNormal < 0) //True = Collision has happened
                     {
                         collisionManager.CollisionBetweenCamera(entity, COLLISIONTYPE.SPHERE_LINE);
                         return;
                     }
-                }                
+                }
             }
         }
     }

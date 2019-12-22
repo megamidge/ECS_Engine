@@ -314,9 +314,11 @@ namespace OpenGL_Game.Scenes
             float width = sceneManager.Width, height = sceneManager.Height, fontSize = Math.Min(width, height) / 10f;
             GUI.clearColour = Color.Transparent;
             GUI.Label(new Rectangle(0, 0, (int)width, (int)(fontSize * 2f)), $"Keys Collected: {pickupsCollected}/3  {doorState}", 18, StringAlignment.Near, Color.White);
-            List<Cell> cellNames = navMesh.FindCellsForPosition(camera.cameraPosition.Xz);
-            
+
+            List<Cell> cellNames = navMesh.FindCellsForPosition(camera.cameraPosition.Xz);            
             GUI.Label(new Rectangle(0, 40, (int)width, (int)(fontSize * 2f)), $"Current cell: {string.Join(", ",cellNames.ConvertAll(c => c.name))}", 18, StringAlignment.Near, Color.White);
+
+            GUI.Label(new Rectangle(0, 80, (int)width, (int)(fontSize * 2f)), $"Current pos: {camera.cameraPosition.X} {camera.cameraPosition.Z}", 18, StringAlignment.Near, Color.White);
             GUI.Render();
         }
 
