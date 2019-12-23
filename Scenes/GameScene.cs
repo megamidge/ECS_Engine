@@ -115,6 +115,18 @@ namespace OpenGL_Game.Scenes
         {
             Entity newEntity;
 
+            newEntity = new Entity("SpikyBall_1");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-25, 0.5f, 25)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/SpikyBall/spikyball.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(0.25f));
+            entityManager.AddEntity(newEntity);
+
+            newEntity = new Entity("SpikyBall_2");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-25, 0.5f, -25)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/SpikyBall/spikyball.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(0.25f));
+            entityManager.AddEntity(newEntity);
+
             newEntity = new Entity("Moon");
             newEntity.AddComponent(new ComponentTransform(new Vector3(-14.5f, 1.8f, -24.5f), new Vector3(0, MathHelper.DegreesToRadians(0), 0), new Vector3(1, 1, 1)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/Moon/moon.obj"));
