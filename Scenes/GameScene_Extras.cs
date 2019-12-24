@@ -104,5 +104,66 @@ namespace OpenGL_Game.Scenes
                 sceneManager.ChangeScene(SceneType.SCENE_GAME_OVER);
             }
         }
+
+        public void HandleSpikyBallCollision()
+        {
+            //Decrement lives and reset the scene (as efficiently as possible).
+            //Removing the pikcups and re-adding them and recreating the camera and drone position seem to get it stuck in a loop of still colliding with the spikyball.
+            //Bit odd but ye. 
+
+            KillPlayer();
+        }
+        private void KillPlayer()
+        {
+            pickupsCollected = 0;
+
+            lives -= 1;
+            if (lives <= 0)
+                sceneManager.ChangeScene(SceneType.SCENE_GAME_OVER);
+            else
+                Reset();
+        }
+
+        private void AnimateSpikyBalls(float dt)
+        {
+            AnimateSpiky1(dt);
+            AnimateSpiky2(dt);
+        }
+
+        private void AnimateSpiky1(float dt)
+        {
+            Entity entity = entityManager.FindEntity("SpikyBall_1");
+            ComponentTransform transforComponent = (ComponentTransform)entity.Components.Find(c => c.ComponentType == ComponentTypes.COMPONENT_TRANSFORM);
+
+            //Animate;
+            Vector3 rotation = transforComponent.Rotation;
+            rotation.Y += 1 * dt;
+            rotation.Z += 4 * dt;
+            transforComponent.Rotation = rotation;
+
+            Vector3 position = transforComponent.Position;
+            position.X = transforComponent.InitPosition.X + 5 * (float)Math.Sin(sceneManager.time);
+            position.Z = transforComponent.InitPosition.Z + 5 * (float)Math.Cos(sceneManager.time);
+            transforComponent.Position = position;
+
+        }
+        private void AnimateSpiky2(float dt)
+        {
+            Entity entity = entityManager.FindEntity("SpikyBall_2");
+            ComponentTransform transforComponent = (ComponentTransform)entity.Components.Find(c => c.ComponentType == ComponentTypes.COMPONENT_TRANSFORM);
+
+            //Animate;
+            Vector3 rotation = transforComponent.Rotation;
+            rotation.Y += 1 * dt;
+            rotation.Z += 4 * dt;
+            transforComponent.Rotation = rotation;
+
+            float offset = 2f;
+            Vector3 position = transforComponent.Position;
+            position.X = transforComponent.InitPosition.X + 4 * (float)Math.Sin( 2 * sceneManager.time - offset);
+            position.Z = transforComponent.InitPosition.Z + 4 * (float)Math.Cos(sceneManager.time - offset);
+            position.Y = transforComponent.InitPosition.Y + Math.Abs(2 * (float)Math.Sin( 5 * sceneManager.time));
+            transforComponent.Position = position;
+        }
     }
 }

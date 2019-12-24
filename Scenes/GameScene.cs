@@ -28,6 +28,8 @@ namespace OpenGL_Game.Scenes
 
         private NavMesh navMesh;
 
+        private int lives = 3;
+
         public GameScene(SceneManager sceneManager) : base(sceneManager)
         {
             sceneManager.CursorVisible = false;
@@ -110,21 +112,28 @@ namespace OpenGL_Game.Scenes
         }
 
 
-
+        private void Reset()
+        {
+            //Reset scene but keep num lives.
+            List<string> entityNames = entityManager.Entities().ConvertAll(e => e.Name);
+            entityNames.ForEach(s => entityManager.RemoveEntity(s));
+            CreateEntities();
+            camera.SetPosition(new Vector3(22, 1.8f, 22));
+        }
         private void CreateEntities()
         {
             Entity newEntity;
 
             newEntity = new Entity("SpikyBall_1");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(-25, 0.5f, 25)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 0.5f, 22)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/SpikyBall/spikyball.obj"));
-            newEntity.AddComponent(new ComponentCollisionSphere(0.25f));
+            newEntity.AddComponent(new ComponentCollisionSphere(0.5f));
             entityManager.AddEntity(newEntity);
 
             newEntity = new Entity("SpikyBall_2");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(-25, 0.5f, -25)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 0.5f, -22)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/SpikyBall/spikyball.obj"));
-            newEntity.AddComponent(new ComponentCollisionSphere(0.25f));
+            newEntity.AddComponent(new ComponentCollisionSphere(0.5f));
             entityManager.AddEntity(newEntity);
 
             newEntity = new Entity("Moon");
@@ -147,23 +156,8 @@ namespace OpenGL_Game.Scenes
             newEntity.AddComponent(audioComp);
             entityManager.AddEntity(newEntity);
 
-            newEntity = new Entity("Pickup_1");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 1, 22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
-            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
-            newEntity.AddComponent(new ComponentCollisionSphere(1));
-            entityManager.AddEntity(newEntity);
-
-            newEntity = new Entity("Pickup_2");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(22, 1, -22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
-            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
-            newEntity.AddComponent(new ComponentCollisionSphere(1));
-            entityManager.AddEntity(newEntity);
-
-            newEntity = new Entity("Pickup_3");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 1, -22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
-            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
-            newEntity.AddComponent(new ComponentCollisionSphere(1));
-            entityManager.AddEntity(newEntity);
+            CreatePickups();
+            
 
             newEntity = new Entity("Drone");
             newEntity.AddComponent(new ComponentTransform(new Vector3(0), new Vector3(0,0,0), new Vector3(0.75f)));
@@ -280,6 +274,28 @@ namespace OpenGL_Game.Scenes
             systemManager.AddSystem(newSystem);
         }
 
+        private void CreatePickups()
+        {
+            Entity newEntity;
+            newEntity = new Entity("Pickup_1");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 1, 22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(1));
+            entityManager.AddEntity(newEntity);
+
+            newEntity = new Entity("Pickup_2");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(22, 1, -22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(1));
+            entityManager.AddEntity(newEntity);
+
+            newEntity = new Entity("Pickup_3");
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-22, 1, -22), new Vector3(0, 0, MathHelper.DegreesToRadians(15)), new Vector3(1, 1, 1)));
+            newEntity.AddComponent(new ComponentGeometry("Geometry/Pickup/pickup.obj"));
+            newEntity.AddComponent(new ComponentCollisionSphere(1));
+            entityManager.AddEntity(newEntity);
+        }
+
         //Persistent variables (cross-update variables):
         bool[] keysPressed = new bool[255];
 
@@ -303,6 +319,7 @@ namespace OpenGL_Game.Scenes
             HandleCameraMovement(dt);
 
             AnimatePickups(dt);
+            AnimateSpikyBalls(dt);
 
             HandleDoorPortal(dt);
 
@@ -326,6 +343,7 @@ namespace OpenGL_Game.Scenes
             float width = sceneManager.Width, height = sceneManager.Height, fontSize = Math.Min(width, height) / 10f;
             GUI.clearColour = Color.Transparent;
             GUI.Label(new Rectangle(0, 0, (int)width, (int)(fontSize * 2f)), $"Keys Collected: {pickupsCollected}/3  {doorState}", 18, StringAlignment.Near, Color.White);
+            GUI.Label(new Rectangle(0, 0, (int)width, (int)(fontSize * 2f)), $"Lives: {lives}", 18, StringAlignment.Far);
 
             List<Cell> cellNames = navMesh.FindCellsForPosition(camera.cameraPosition.Xz);            
             GUI.Label(new Rectangle(0, 40, (int)width, (int)(fontSize * 2f)), $"Current cell: {string.Join(", ",cellNames.ConvertAll(c => c.name))}", 18, StringAlignment.Near, Color.White);

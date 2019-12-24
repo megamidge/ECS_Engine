@@ -15,11 +15,14 @@ namespace OpenGL_Game.Managers
                 if (collision.entity.Name.ToLower().Contains("pickup"))
                 {
                     Scenes.GameScene.gameInstance.HandlePickup(collision.entity);
-
                 }
                 if (collision.entity.Name == "Landing_Ship_Door")
                 {
                     Scenes.GameScene.gameInstance.HandleShipDoorCollision();
+                }
+                if (collision.entity.Name.ToLower().Contains("spikyball"))
+                {
+                    Scenes.GameScene.gameInstance.HandleSpikyBallCollision();
                 }
 
 

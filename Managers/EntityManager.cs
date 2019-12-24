@@ -25,8 +25,14 @@ namespace OpenGL_Game.Managers
             entityList.Remove(entity);
             Debug.WriteLine($"Removed entity {entity.Name}");
         }
+        public void RemoveEntity(string entityName)
+        {
+            Entity entity = FindEntity(entityName);
+            if (entity != null)
+                RemoveEntity(entity);
+        }
 
-        private Entity FindEntity(string name)
+        public Entity FindEntity(string name)
         {
             return entityList.Find(delegate(Entity e)
             {
