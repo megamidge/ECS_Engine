@@ -6,15 +6,17 @@ layout (location = 2) in vec3 a_Normal;
 
 uniform mat4 ModelViewProjMat;
 uniform mat4 ModelMat;
+uniform mat4 ViewMat;
 
 out vec2 v_TexCoord;
-out vec3 v_Normal;
-out vec3 v_FragPos;
+out vec4 v_Normal;
+out vec4 v_FragPos;
 
 void main()
 {
 	gl_Position = ModelViewProjMat * vec4(a_Position, 1.0);
-	v_FragPos = vec3(ModelMat * vec4(a_Position, 1.0));
+	//v_FragPos = vec3(ModelMat * vec4(a_Position, 1.0));
+	v_FragPos = vec4(a_Position, 1) * ModelMat * ViewMat;
 	v_TexCoord = a_TexCoord;
-	v_Normal = a_Normal;
+	v_Normal = vec4(normalize(a_Normal * mat3(transpose(inverse(ModelMat * ViewMat)))),1);
 }

@@ -137,7 +137,7 @@ namespace OpenGL_Game.Scenes
             entityManager.AddEntity(newEntity);
 
             newEntity = new Entity("Moon");
-            newEntity.AddComponent(new ComponentTransform(new Vector3(-14.5f, 1.8f, -24.5f), new Vector3(0, MathHelper.DegreesToRadians(0), 0), new Vector3(1, 1, 1)));
+            newEntity.AddComponent(new ComponentTransform(new Vector3(-30f, 7f, -30f), new Vector3(MathHelper.DegreesToRadians(90), MathHelper.DegreesToRadians(0), MathHelper.DegreesToRadians(0)), new Vector3(1, 1, 1)));
             newEntity.AddComponent(new ComponentGeometry("Geometry/Moon/moon.obj"));
             newEntity.AddComponent(new ComponentCollisionSphere(2f));
             entityManager.AddEntity(newEntity);
@@ -322,6 +322,13 @@ namespace OpenGL_Game.Scenes
             AnimateSpikyBalls(dt);
 
             HandleDoorPortal(dt);
+
+            //Rotate moon
+            Entity moon = entityManager.FindEntity("Moon");
+            ComponentTransform componentTransform = (ComponentTransform)moon.Components.Find(c => c.ComponentType == ComponentTypes.COMPONENT_TRANSFORM);
+            Vector3 rotation = componentTransform.Rotation;
+            rotation.Y += 0.05f * dt;
+            componentTransform.Rotation = rotation;
 
             systemManager.ActionSystems(entityManager);
             collisionManager.ProcessCollisions();

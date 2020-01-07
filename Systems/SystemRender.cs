@@ -21,6 +21,7 @@ namespace OpenGL_Game.Systems
         protected int uniform_mmodelviewproj;
         protected int uniform_mmodel;
         protected int uniform_mview;
+        protected int uniform_lightpos;
 
         public SystemRender()
         {
@@ -33,6 +34,8 @@ namespace OpenGL_Game.Systems
             uniform_stex = GL.GetUniformLocation(pgmID, "s_texture");
             uniform_mmodelviewproj = GL.GetUniformLocation(pgmID, "ModelViewProjMat");
             uniform_mmodel = GL.GetUniformLocation(pgmID, "ModelMat");
+            uniform_mview = GL.GetUniformLocation(pgmID, "ViewMat");
+            uniform_lightpos = GL.GetUniformLocation(pgmID, "lightPos");
         }
 
         void LoadShader(String filename, ShaderType type, int program, out int address)
@@ -91,13 +94,14 @@ namespace OpenGL_Game.Systems
             GL.Uniform1(uniform_stex, 0);
             GL.ActiveTexture(TextureUnit.Texture0);
 
-            GL.UniformMatrix4(uniform_mmodel, false, ref model);
+            GL.UniformMatrix4(uniform_mview, true, ref GameScene.gameInstance.camera.view);
+            Vector4 lightPosition = Vector4.Transform(new Vector4(0, 20, 0,1),GameScene.gameInstance.camera.view);
+            GL.Uniform4(uniform_lightpos, ref lightPosition);
+            GL.UniformMatrix4(uniform_mmodel, true, ref model);
             Matrix4 modelViewProjection = model * GameScene.gameInstance.camera.view * GameScene.gameInstance.camera.projection;
             GL.UniformMatrix4(uniform_mmodelviewproj, false, ref modelViewProjection);
 
 
-            int eyePos =  GL.GetUniformLocation(pgmID, "eye_position");
-            GL.Uniform3(eyePos, GameScene.gameInstance.camera.cameraPosition);
 
             geometry.Render();
 
