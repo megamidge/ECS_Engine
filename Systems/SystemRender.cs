@@ -94,9 +94,20 @@ namespace OpenGL_Game.Systems
             GL.Uniform1(uniform_stex, 0);
             GL.ActiveTexture(TextureUnit.Texture0);
 
+            for(int i = 0; i < GameScene.gameInstance.lights.Length; i++)
+            {
+                int uniform_lightPos = GL.GetUniformLocation(pgmID, $"lights[{i}].Position");
+                Vector4 lightPosition = Vector4.Transform(GameScene.gameInstance.lights[i].Position, GameScene.gameInstance.camera.view);
+                GL.Uniform4(uniform_lightPos, ref lightPosition);
+                int uniform_lightColour = GL.GetUniformLocation(pgmID, $"lights[{i}].Colour");
+                GL.Uniform3(uniform_lightColour, ref GameScene.gameInstance.lights[i].Colour);
+            }
+            int uniform_lightCount = GL.GetUniformLocation(pgmID, "lightCount");
+            GL.Uniform1(uniform_lightCount, GameScene.gameInstance.lights.Length);
+
             GL.UniformMatrix4(uniform_mview, true, ref GameScene.gameInstance.camera.view);
-            Vector4 lightPosition = Vector4.Transform(new Vector4(0, 20, 0,1),GameScene.gameInstance.camera.view);
-            GL.Uniform4(uniform_lightpos, ref lightPosition);
+            //Vector4 lightPosition = Vector4.Transform(new Vector4(0, 20, 0,1),GameScene.gameInstance.camera.view);
+            //GL.Uniform4(uniform_lightpos, ref lightPosition);
             GL.UniformMatrix4(uniform_mmodel, true, ref model);
             Matrix4 modelViewProjection = model * GameScene.gameInstance.camera.view * GameScene.gameInstance.camera.projection;
             GL.UniformMatrix4(uniform_mmodelviewproj, false, ref modelViewProjection);

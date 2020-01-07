@@ -30,6 +30,8 @@ namespace OpenGL_Game.Scenes
 
         private int lives = 3;
 
+        public Light[] lights;
+
         public GameScene(SceneManager sceneManager) : base(sceneManager)
         {
             sceneManager.CursorVisible = false;
@@ -104,7 +106,7 @@ namespace OpenGL_Game.Scenes
                 }
             );
 
-
+            CreateLights();
             CreateEntities();
             CreateSystems();
 
@@ -119,6 +121,40 @@ namespace OpenGL_Game.Scenes
             entityNames.ForEach(s => entityManager.RemoveEntity(s));
             CreateEntities();
             camera.SetPosition(new Vector3(22, 1.8f, 22));
+        }
+        private void CreateLights()
+        {
+            lights = new Light[5];
+            lights[0] = new Light
+            {
+                Position = new Vector4(0, 15, 0, 1),
+                Colour = new Vector3(0.8f, 0.9f, 1f)
+            };
+            lights[1] = new Light
+            {
+                Position = new Vector4(-22, 10, 22, 1),
+                Colour = new Vector3(0.5f, 0.8f, 0.9f)
+            };
+            lights[2] = new Light
+            {
+                Position = new Vector4(22, 10, 22, 1),
+                Colour = new Vector3(0.5f, 0.8f, 0.9f)
+            };
+            lights[3] = new Light
+            {
+                Position = new Vector4(-22, 10, -22, 1),
+                Colour = new Vector3(0.5f, 0.8f, 0.9f)
+            };
+            lights[4] = new Light
+            {
+                Position = new Vector4(22, 10, -22, 1),
+                Colour = new Vector3(0.5f, 0.8f, 0.9f)
+            };
+        }
+        public struct Light
+        {
+            public Vector4 Position;
+            public Vector3 Colour;
         }
         private void CreateEntities()
         {
