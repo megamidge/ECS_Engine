@@ -7,6 +7,7 @@ using OpenGL_Game.Components;
 using OpenGL_Game.OBJLoader;
 using OpenGL_Game.Objects;
 using OpenGL_Game.Scenes;
+using OpenGL_Game.Managers;
 
 namespace OpenGL_Game.Systems
 {
@@ -45,7 +46,7 @@ namespace OpenGL_Game.Systems
 
         public void Motion(ComponentTransform componentPosition, ComponentVelocity componentVelocity)
         {
-            componentPosition.Position = componentPosition.Position + componentVelocity.Velocity * GameScene.dt;
+            componentPosition.Position = componentPosition.Position + componentVelocity.Velocity * SceneManager.deltaTime;
         }
     }
 }
